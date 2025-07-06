@@ -1,0 +1,6 @@
+
+# Backend Strapi
+*node_modules/
+*.env
+*build/
+*.tmp/
