@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transaction_splits",
+  "info": {
+    "singularName": "transaction-split",
+    "pluralName": "transaction-splits",
+    "displayName": "Transaction Split",
+    "description": "Transaction splits between multiple users"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "amount": {
+      "type": "integer",
+      "required": true
+    },
+    "paid_at": {
+      "type": "datetime"
+    },
+    "transaction": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::transaction.transaction",
+      "inversedBy": "transaction_splits"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user-profile.user-profile",
+      "inversedBy": "transaction_splits"
+    }
+  }
+}

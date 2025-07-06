@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "credit_cards",
+  "info": {
+    "singularName": "credit-card",
+    "pluralName": "credit-cards",
+    "displayName": "Credit Card",
+    "description": "User credit card information"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "closing_day": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 31
+    },
+    "due_day": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 31
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user-profile.user-profile",
+      "inversedBy": "credit_cards"
+    },
+    "transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaction.transaction",
+      "mappedBy": "credit_card"
+    }
+  }
+}
