@@ -23,13 +23,13 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::transaction.transaction",
-      "inversedBy": "transaction_splits"
+      
     },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::user-profile.user-profile",
-      "inversedBy": "transaction_splits"
+      "target": "plugin::users-permissions.user",
+      
     }
   }
 }

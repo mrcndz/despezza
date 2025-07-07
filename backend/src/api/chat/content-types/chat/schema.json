@@ -21,20 +21,17 @@
     },
     "chat_type": {
       "type": "enumeration",
-      "enum": ["group", "direct"],
-      "required": true
+      "required": true,
+      "enum": [
+        "group",
+        "direct"
+      ]
     },
     "group": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::group.group",
-      "inversedBy": "chat"
-    },
-    "participants": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "chats"
+      
     },
     "messages": {
       "type": "relation",

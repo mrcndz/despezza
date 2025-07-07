@@ -28,8 +28,7 @@
     "users": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::user-profile.user-profile",
-      "inversedBy": "groups"
+      "target": "plugin::users-permissions.user"
     },
     "transactions": {
       "type": "relation",

@@ -42,32 +42,32 @@
     "owner": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::user-profile.user-profile",
-      "inversedBy": "transactions"
+      "target": "plugin::users-permissions.user",
+      
     },
     "group": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::group.group",
-      "inversedBy": "transactions"
+      
     },
     "credit_card": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::credit-card.credit-card",
-      "inversedBy": "transactions"
+      
     },
     "category": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
-      "inversedBy": "transactions"
+      
     },
     "parent_transaction": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::transaction.transaction",
-      "inversedBy": "child_transactions"
+      
     },
     "child_transactions": {
       "type": "relation",

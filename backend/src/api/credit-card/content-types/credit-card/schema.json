@@ -31,8 +31,7 @@
     "owner": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::user-profile.user-profile",
-      "inversedBy": "credit_cards"
+      "target": "plugin::users-permissions.user"
     },
     "transactions": {
       "type": "relation",

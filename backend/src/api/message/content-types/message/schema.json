@@ -24,14 +24,12 @@
     "sender": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "sent_messages"
+      "target": "plugin::users-permissions.user"
     },
     "chat": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::chat.chat",
-      "inversedBy": "messages"
+      "target": "api::chat.chat"
     },
     "attachment": {
       "type": "media",
@@ -42,8 +40,7 @@
     "replied_to": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::message.message",
-      "inversedBy": "replies"
+      "target": "api::message.message"
     },
     "replies": {
       "type": "relation",

@@ -340,33 +340,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAboutAbout extends Struct.SingleTypeSchema {
-  collectionName: 'abouts';
-  info: {
-    description: 'Write about yourself and the content you create';
-    displayName: 'About';
-    pluralName: 'abouts';
-    singularName: 'about';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      ['shared.media', 'shared.quote', 'shared.rich-text', 'shared.slider']
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-  };
-}
-
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -418,7 +391,6 @@ export interface ApiChatChat extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     messages: Schema.Attribute.Relation<'oneToMany', 'api::message.message'>;
     name: Schema.Attribute.String;
-    participants: Schema.Attribute.Relation<'manyToMany', 'plugin::users-permissions.user'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
@@ -461,7 +433,7 @@ export interface ApiCreditCardCreditCard extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::credit-card.credit-card'> &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
-    owner: Schema.Attribute.Relation<'manyToOne', 'api::user-profile.user-profile'>;
+    owner: Schema.Attribute.Relation<'manyToOne', 'plugin::users-permissions.user'>;
     publishedAt: Schema.Attribute.DateTime;
     transactions: Schema.Attribute.Relation<'oneToMany', 'api::transaction.transaction'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -521,7 +493,7 @@ export interface ApiGroupGroup extends Struct.CollectionTypeSchema {
     transactions: Schema.Attribute.Relation<'oneToMany', 'api::transaction.transaction'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    users: Schema.Attribute.Relation<'manyToMany', 'api::user-profile.user-profile'>;
+    users: Schema.Attribute.Relation<'manyToMany', 'plugin::users-permissions.user'>;
   };
 }
 
@@ -588,7 +560,7 @@ export interface ApiTransactionSplitTransactionSplit extends Struct.CollectionTy
     transaction: Schema.Attribute.Relation<'manyToOne', 'api::transaction.transaction'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<'manyToOne', 'api::user-profile.user-profile'>;
+    user: Schema.Attribute.Relation<'manyToOne', 'plugin::users-permissions.user'>;
   };
 }
 
@@ -617,7 +589,7 @@ export interface ApiTransactionTransaction extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::transaction.transaction'> &
       Schema.Attribute.Private;
-    owner: Schema.Attribute.Relation<'manyToOne', 'api::user-profile.user-profile'>;
+    owner: Schema.Attribute.Relation<'manyToOne', 'plugin::users-permissions.user'>;
     parent_transaction: Schema.Attribute.Relation<'manyToOne', 'api::transaction.transaction'>;
     publishedAt: Schema.Attribute.DateTime;
     start_date: Schema.Attribute.Date;
@@ -628,37 +600,6 @@ export interface ApiTransactionTransaction extends Struct.CollectionTypeSchema {
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-  };
-}
-
-export interface ApiUserProfileUserProfile extends Struct.CollectionTypeSchema {
-  collectionName: 'user_profiles';
-  info: {
-    description: 'Extended user profile information';
-    displayName: 'User Profile';
-    pluralName: 'user-profiles';
-    singularName: 'user-profile';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    credit_cards: Schema.Attribute.Relation<'oneToMany', 'api::credit-card.credit-card'>;
-    groups: Schema.Attribute.Relation<'manyToMany', 'api::group.group'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::user-profile.user-profile'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    transaction_splits: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::transaction-split.transaction-split'
-    >;
-    transactions: Schema.Attribute.Relation<'oneToMany', 'api::transaction.transaction'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<'oneToOne', 'plugin::users-permissions.user'>;
   };
 }
 
@@ -1046,23 +987,36 @@ export interface PluginUsersPermissionsUser extends Struct.CollectionTypeSchema 
     timestamps: true;
   };
   attributes: {
-    chats: Schema.Attribute.Relation<'manyToMany', 'api::chat.chat'>;
+    blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
+    confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    credit_cards: Schema.Attribute.Relation<'oneToMany', 'api::credit-card.credit-card'>;
-    groups: Schema.Attribute.Relation<'manyToMany', 'api::group.group'>;
+    email: Schema.Attribute.Email &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 6;
+      }>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'plugin::users-permissions.user'> &
       Schema.Attribute.Private;
+    password: Schema.Attribute.Password &
+      Schema.Attribute.Private &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 6;
+      }>;
+    provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    sent_messages: Schema.Attribute.Relation<'oneToMany', 'api::message.message'>;
-    transaction_splits: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::transaction-split.transaction-split'
-    >;
-    transactions: Schema.Attribute.Relation<'oneToMany', 'api::transaction.transaction'>;
+    resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
+    role: Schema.Attribute.Relation<'manyToOne', 'plugin::users-permissions.role'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    username: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 3;
+      }>;
   };
 }
 
@@ -1076,7 +1030,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::about.about': ApiAboutAbout;
       'api::category.category': ApiCategoryCategory;
       'api::chat.chat': ApiChatChat;
       'api::credit-card.credit-card': ApiCreditCardCreditCard;
@@ -1085,7 +1038,6 @@ declare module '@strapi/strapi' {
       'api::message.message': ApiMessageMessage;
       'api::transaction-split.transaction-split': ApiTransactionSplitTransactionSplit;
       'api::transaction.transaction': ApiTransactionTransaction;
-      'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
